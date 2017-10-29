@@ -1,0 +1,11 @@
+powerCons <- read.table("household_power_consumption.txt", header = TRUE, sep = ";")
+powerCons <- subset(powerCons, powerCons$Date=="1/2/2007" | powerCons$Date=="2/2/2007")
+powerCons$Date <- as.Date(powerCons$Date, format = "%d/%m/%Y")
+powerCons$Time <- strptime(powerCons$Time, format = "%H:%M:%S")
+powerCons$Time <- strftime(powerCons$Time, format = "%H:%M:%S")
+powerCons$Global_active_power <- as.numeric(levels(powerCons$Global_active_power))[powerCons$Global_active_power]
+powerCons$Date <- paste(powerCons$Date,powerCons$Time)
+powerCons$Date <- as.POSIXct(powerCons$Date, format = "%Y-%m-%d %H:%M:%S")
+png(file = "plot2.png")
+plot(powerCons$Date, powerCons$Global_active_power, type = "l", ylab = "Global Active Power (kilowatts)", xlab = "")
+dev.off()
